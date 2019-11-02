@@ -1,5 +1,7 @@
 ﻿using System;
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class AircraftController : MonoBehaviour {
     // Constant forward thrust from the aircraft engines.
@@ -14,6 +16,12 @@ public class AircraftController : MonoBehaviour {
     private Vector3 controlForce;
     private Rigidbody rigidBody;
 
+    public KeyCode shootKey = KeyCode.Space;
+
+    public GameObject projectile;
+
+    public float shootForce;
+
 	// Use this for initialization
 	void Start () {
         // Find the RigidBody component and save a reference to it.
@@ -25,19 +33,25 @@ public class AircraftController : MonoBehaviour {
         // Calculate the control force to apply from the inputs.
         // The forward (z) component is always applied to keep the aircraft moving forward.
         controlForce.Set(
-            Input.GetAxis("Horizontal") * turnForceMultiplier, 
-            Input.GetAxis("Vertical") * turnForceMultiplier, 
+            Input.GetAxis("Horizontal") * turnForceMultiplier,
+            Input.GetAxis("Vertical") * turnForceMultiplier,
             1.0f
         );
         controlForce = controlForce.normalized * forwardThrustForce;
+
+        if (Input.GetKeyDown(shootKey))
+        {
+          GameObject shot = GameObject.Instantiate(projectile, transform.position, transform.rotation);
+          shot.GetComponent<Rigidbody>().AddForce(transform.forward * shootForce);
+        }
     }
 
     void FixedUpdate()
     {
         // Apply the braking force to apply to limit the maximum speed.
-        float excessSpeed = Math.Max(0, rigidBody.velocity.magnitude - maxSpeed);        
-        Vector3 brakeForce = rigidBody.velocity.normalized * excessSpeed;    
-        rigidBody.AddForce(-brakeForce, ForceMode.Force);   
+        float excessSpeed = Math.Max(0, rigidBody.velocity.magnitude - maxSpeed);
+        Vector3 brakeForce = rigidBody.velocity.normalized * excessSpeed;
+        rigidBody.AddForce(-brakeForce, ForceMode.Force);
 
         // Apply the control force to move the aircraft in the desired direction.
         rigidBody.AddRelativeForce(controlForce, ForceMode.Force);
@@ -45,5 +59,6 @@ public class AircraftController : MonoBehaviour {
         // Rotate the aircraft to face in the direction that it is flying in.
         transform.forward = rigidBody.velocity;
     }
+
+
 }
-    
