@@ -11,19 +11,17 @@
      public int maxHealth = 100;
      public int curHealth = 100;
 
-     //public float healthBarLength;
+     public float healthBarLength;
 
      // Use this for initialization
      void Start () {
-         //healthBarLength = Screen.width / 2;
+         healthBarLength = Screen.width / 2;
      }
 
-     //
-     // void OnGUI() {
-     //     GUI.Box(new Rect(10, 40, healthBarLength, 20), curHealth + "/" + maxHealth);
-     // }
+     void OnGUI() {
+         GUI.Box(new Rect(10, 40, healthBarLength, 20), curHealth + "/" + maxHealth);
+     }
 
-     // on collision decrease by a set amount, destroy obj on death;
      public void AddjustCurrentHealth(int adj) {
          curHealth += adj;
 
@@ -36,6 +34,6 @@
          if(maxHealth < 1)
              maxHealth = 1;
 
-         //healthBarLength = (Screen.width / 2) * (curHealth / (float)maxHealth);
+         healthBarLength = (Screen.width / 2) * (curHealth / (float)maxHealth);
      }
  }
