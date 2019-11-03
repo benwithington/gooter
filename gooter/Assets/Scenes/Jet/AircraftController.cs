@@ -19,6 +19,7 @@ public class AircraftController : MonoBehaviour {
     public KeyCode shootKey = KeyCode.Space;
 
     public GameObject projectile;
+    public ParticleSystem exp;
 
     public float shootForce;
 
@@ -26,6 +27,9 @@ public class AircraftController : MonoBehaviour {
 	void Start () {
         // Find the RigidBody component and save a reference to it.
         rigidBody = GetComponent<Rigidbody>();
+        exp = GetComponent<ParticleSystem>();
+        exp.Stop();
+
 	}
 
 	// Update is called once per frame
@@ -49,12 +53,14 @@ public class AircraftController : MonoBehaviour {
             Explode();
         }
     }
+
     void Explode()
     {
-        var exp = GetComponent<ParticleSystem>();
+        Debug.Log("Implode");
         exp.Play();
-        Destroy(gameObject, exp.duration);
+        // Destroy(gameObject, exp.duration);
     }
+
     void FixedUpdate()
     {
         // Apply the braking force to apply to limit the maximum speed.
