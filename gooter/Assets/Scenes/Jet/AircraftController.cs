@@ -44,8 +44,17 @@ public class AircraftController : MonoBehaviour {
           GameObject shot = GameObject.Instantiate(projectile, transform.position, transform.rotation);
           shot.GetComponent<Rigidbody>().AddForce(transform.forward * shootForce);
         }
+        if(GameObject.Find("SpaceJet").transform.position.y <= 0)
+        {
+            Explode();
+        }
     }
-
+    void Explode()
+    {
+        var exp = GetComponent<ParticleSystem>();
+        exp.Play();
+        Destroy(gameObject, exp.duration);
+    }
     void FixedUpdate()
     {
         // Apply the braking force to apply to limit the maximum speed.
